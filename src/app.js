@@ -6,6 +6,8 @@ const PORT = process.env.PORT || 3000;
 
 // Middleware para o Express entender JSON no corpo lá das requisições
 app.use(express.json());
+const authRoutes = require("./routes/auth.routes"); // A autenticação e as rotas do endpoint
+app.use("/auth", authRoutes);
 
 // Rota de teste pra ver tá funfando
 app.get("/api/status", (req, res) => {
