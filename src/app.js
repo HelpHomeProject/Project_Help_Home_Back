@@ -1,4 +1,5 @@
 const express = require("express");
+const mongoose = require("mongoose");
 require("dotenv").config();
 
 const app = express();
@@ -17,7 +18,16 @@ app.get("/api/status", (req, res) => {
   });
 });
 
-// Iniciando o servidor
-app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
-});
+// ligando Mongose e startando o sv
+mongoose.connect(process.env.MONGO_URI)
+    .then(() => {
+        console.log('Mongoose conectou! Funfando o MongoDB!');
+        
+        //Sv so fica on se o BD tiver on também
+        app.listen(PORT, () => {
+            console.log(`Servidor rodando na porta ${PORT}`);
+        });
+    })
+    .catch((error) => {
+        console.error('Deu um erro aqui, o MongoDB pifou:', error);
+    });
