@@ -5,22 +5,23 @@ exports.createProfessional = async (req, res) => {
   try {
     const { name, email, specialty, phone } = req.body;
 
-    // Validacao inicial aqui
+    // 👇 Capturamos o caminho da foto que o Multer acabou de salvar (se a foto foi enviada)
+    const profileImage = req.file ? req.file.path : null;
+
+    // Validação básica
     if (!name || !email || !specialty) {
       return res
         .status(400)
-        .json({ error: "Nome, e-mail e especialidade são obrigatórios!" });
+        .json({ error: "Nome, e-mail e especialidade são obrigatórios" });
     }
-
-    // mail ta cadastrado?
-    const existingProfessional = await Professional.findOne({ email });
-    if (existingProfessional) {
-      return res
-        .status(400)
-        .json({ error: "Este e-mail já está em uso por outro profissional" });
-    }
-
-    const newProfessional = new Professional({ name, email, specialty, phone });
+    // na hora que cria o perfil profissional, vai adc a img
+    const newProfessional = new Professional({
+      name,
+      email,
+      specialty,
+      phone,
+      profileImage,
+    });
     await newProfessional.save();
 
     res.status(201).json(newProfessional);
