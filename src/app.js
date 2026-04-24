@@ -7,6 +7,8 @@ const PORT = process.env.PORT || 3000;
 
 // Middleware para o Express entender JSON no corpo das requisições
 app.use(express.json());
+const path = require('path'); // torna a pasta upload publica para acessar as img nela
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 // Autenticando as rotas
 const authRoutes = require("./routes/auth.routes");
