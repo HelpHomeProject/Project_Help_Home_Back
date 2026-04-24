@@ -1,13 +1,22 @@
 const express = require("express");
+const mongoose = require("mongoose");
 require("dotenv").config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware para o Express entender JSON no corpo lá das requisições
+// Middleware para o Express entender JSON no corpo das requisições
 app.use(express.json());
 
-// Rota de teste pra ver tá funfando
+// Autenticando as rotas
+const authRoutes = require("./routes/auth.routes");
+app.use("/auth", authRoutes);
+
+// as rotas do professional
+const professionalRoutes = require("./routes/professional.routes");
+app.use("/professionals", professionalRoutes);
+
+// Rota de teste pra ver se tá funfando
 app.get("/api/status", (req, res) => {
   res.status(200).json({
     mensagem: "Servidor rodando perfeitamente, cambio desligo!",
@@ -15,7 +24,15 @@ app.get("/api/status", (req, res) => {
   });
 });
 
-// Iniciando o servidor
-app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
-});
+// Conectando o DB e o sv
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => {
+    console.log("Mongoose conectado com sucesso ao MongoDB!");
+    app.listen(PORT, () => {
+      console.log(`Servidor rodando na porta ${PORT}`);
+    });
+  })
+  .catch((error) => {
+    console.error("Erro fatal ao conectar no MongoDB:", error);
+  });
