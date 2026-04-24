@@ -10,8 +10,8 @@ const ProfessionalSchema = new mongoose.Schema(
     email: {
       type: String,
       required: true,
-      unique: true, 
-      lowercase: true, 
+      unique: true,
+      lowercase: true,
       trim: true,
     },
     specialty: {
@@ -21,6 +21,11 @@ const ProfessionalSchema = new mongoose.Schema(
     phone: {
       type: String,
       required: false,
+    },
+    // Novo campo para guardar o caminho da foto
+    profileImage: {
+      type: String,
+      required: false, // O profissional pode querer se cadastrar sem foto no início
     },
   },
   { timestamps: true },
