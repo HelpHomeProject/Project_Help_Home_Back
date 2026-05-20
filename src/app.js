@@ -18,6 +18,9 @@ app.use("/auth", authRoutes);
 const professionalRoutes = require("./routes/professional.routes");
 app.use("/professionals", professionalRoutes);
 
+const clientRoutes = require("./routes/client.routes");
+app.use("/clients", clientRoutes);
+
 // Rota de teste pra ver se tá funfando
 app.get("/api/status", (req, res) => {
   res.status(200).json({
